@@ -48,8 +48,10 @@ async function labeledPNG(record: QRRecord, venue: string, origin: string) {
     while (ctx.measureText(text).width > canvas.width - 96 && text.length > 1) text = text.slice(0, -2) + "…";
     ctx.fillText(text, canvas.width / 2, y);
   };
-  fit(`${kindLabel(record.kind)} · ${venue}`, 700, 56, image.height + 40);
-  fit(record.name, 400, 40, image.height + 110);
+  const title = `${kindLabel(record.kind)} · ${venue}`;
+  fit(title, 700, 56, image.height + 40);
+  // Default venue links are already named "Menú · Local"; skip the repeated line.
+  if (!title.endsWith(record.name.replace(/^[^·]+· /, ""))) fit(record.name, 400, 40, image.height + 110);
   return new Promise<Blob>((resolve, reject) =>
     canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("No pudimos exportar la imagen."))), "image/png"),
   );
