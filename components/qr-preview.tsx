@@ -8,6 +8,7 @@ import {
 } from "react";
 import type QRCodeStyling from "qr-code-styling";
 import type { QRDesign } from "@/lib/qr";
+import { qrOptions } from "@/lib/qr-export";
 export type QRHandle = {
   download: (extension: "png" | "svg", name: string) => Promise<void>;
 };
@@ -18,36 +19,13 @@ export const QRPreview = forwardRef<
   const host = useRef<HTMLDivElement>(null);
   const instance = useRef<QRCodeStyling | null>(null);
   const [error, setError] = useState(false);
+  const { foreground, background, dots, corners, logo } = design;
   useEffect(() => {
     let stopped = false;
     import("qr-code-styling")
       .then(({ default: QRCode }) => {
         if (stopped || !host.current) return;
-        const qr = new QRCode({
-          width: 1024,
-          height: 1024,
-          type: "svg",
-          data,
-          margin: 112,
-          qrOptions: { errorCorrectionLevel: "H" },
-          dotsOptions: { color: design.foreground, type: design.dots },
-          cornersSquareOptions: {
-            color: design.foreground,
-            type: design.corners,
-          },
-          cornersDotOptions: {
-            color: design.foreground,
-            type: design.corners === "square" ? "square" : "dot",
-          },
-          backgroundOptions: { color: design.background },
-          image: design.logo || undefined,
-          imageOptions: {
-            hideBackgroundDots: true,
-            imageSize: 0.25,
-            margin: 8,
-            saveAsBlob: true,
-          },
-        });
+        const qr = new QRCode(qrOptions(data, { foreground, background, dots, corners, logo }));
         host.current.replaceChildren();
         qr.append(host.current);
         instance.current = qr;
@@ -57,14 +35,7 @@ export const QRPreview = forwardRef<
       stopped = true;
       instance.current = null;
     };
-  }, [
-    data,
-    design.foreground,
-    design.background,
-    design.dots,
-    design.corners,
-    design.logo,
-  ]);
+  }, [data, foreground, background, dots, corners, logo]);
   useImperativeHandle(ref, () => ({
     async download(extension, name) {
       if (!instance.current)

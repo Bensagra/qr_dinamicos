@@ -56,6 +56,7 @@ const emptyInput = (): QRInput => ({
   design: { ...defaultDesign },
 });
 import { api } from "@/lib/client-api";
+import { downloadAll } from "@/lib/qr-export";
 function Mark() {
   return (
     <span className="brand-mark">
@@ -356,6 +357,17 @@ export function Studio({
       setNotice(`QR descargado en ${format.toUpperCase()}.`);
     } catch (e) {
       setError((e as Error).message);
+    }
+  }
+  async function exportAll() {
+    setBusy(true);
+    try {
+      await downloadAll(visible, venues, origin);
+      setNotice(`${visible.length} QR descargados en un ZIP.`);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
     }
   }
   async function toggle(record: QRRecord) {
@@ -1104,9 +1116,14 @@ export function Studio({
                     Editá el destino, descargá el diseño y seguí tus enlaces.
                   </p>
                 </div>
-                <button className="button primary" onClick={() => newQR()}>
-                  <Plus size={17} /> Crear un QR
-                </button>
+                <div className="heading-actions">
+                  <button className="button secondary" disabled={busy || !visible.length} onClick={() => void exportAll()}>
+                    {busy ? <LoaderCircle size={17} className="spin" /> : <ArrowDownToLine size={17} />} Descargar {visible.length === records.length ? "todos" : visible.length} en PNG
+                  </button>
+                  <button className="button primary" onClick={() => newQR()}>
+                    <Plus size={17} /> Crear un QR
+                  </button>
+                </div>
               </div>
               <div className="link-filters">
                 <label>Local<select aria-label="Filtrar por local" value={venueFilter} onChange={e => setVenueFilter(e.target.value)}>
