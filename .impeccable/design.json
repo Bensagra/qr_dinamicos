@@ -1,0 +1,393 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-05T14:37:19.651516+00:00",
+  "title": "Design System: QR Studio",
+  "extensions": {
+    "colorMeta": {
+      "green": {
+        "role": "primary",
+        "displayName": "Green",
+        "tonalRamp": [
+          "oklch(15% 0.0611 172.71)",
+          "oklch(26.43% 0.0611 172.71)",
+          "oklch(37.86% 0.0611 172.71)",
+          "oklch(49.29% 0.0611 172.71)",
+          "oklch(60.71% 0.0611 172.71)",
+          "oklch(72.14% 0.0611 172.71)",
+          "oklch(83.57% 0.0611 172.71)",
+          "oklch(95% 0.0611 172.71)"
+        ]
+      },
+      "green-dark": {
+        "role": "primary",
+        "displayName": "Green Dark",
+        "tonalRamp": [
+          "oklch(15% 0.0485 174.11)",
+          "oklch(26.43% 0.0485 174.11)",
+          "oklch(37.86% 0.0485 174.11)",
+          "oklch(49.29% 0.0485 174.11)",
+          "oklch(60.71% 0.0485 174.11)",
+          "oklch(72.14% 0.0485 174.11)",
+          "oklch(83.57% 0.0485 174.11)",
+          "oklch(95% 0.0485 174.11)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0173 177.97)",
+          "oklch(26.43% 0.0173 177.97)",
+          "oklch(37.86% 0.0173 177.97)",
+          "oklch(49.29% 0.0173 177.97)",
+          "oklch(60.71% 0.0173 177.97)",
+          "oklch(72.14% 0.0173 177.97)",
+          "oklch(83.57% 0.0173 177.97)",
+          "oklch(95% 0.0173 177.97)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "tonalRamp": [
+          "oklch(15% 0.0182 166.22)",
+          "oklch(26.43% 0.0182 166.22)",
+          "oklch(37.86% 0.0182 166.22)",
+          "oklch(49.29% 0.0182 166.22)",
+          "oklch(60.71% 0.0182 166.22)",
+          "oklch(72.14% 0.0182 166.22)",
+          "oklch(83.57% 0.0182 166.22)",
+          "oklch(95% 0.0182 166.22)"
+        ]
+      },
+      "support-text": {
+        "role": "neutral",
+        "displayName": "Support Text",
+        "tonalRamp": [
+          "oklch(15% 0.0255 145.20)",
+          "oklch(26.43% 0.0255 145.20)",
+          "oklch(37.86% 0.0255 145.20)",
+          "oklch(49.29% 0.0255 145.20)",
+          "oklch(60.71% 0.0255 145.20)",
+          "oklch(72.14% 0.0255 145.20)",
+          "oklch(83.57% 0.0255 145.20)",
+          "oklch(95% 0.0255 145.20)"
+        ]
+      },
+      "placeholder": {
+        "role": "neutral",
+        "displayName": "Placeholder",
+        "tonalRamp": [
+          "oklch(15% 0.0181 154.16)",
+          "oklch(26.43% 0.0181 154.16)",
+          "oklch(37.86% 0.0181 154.16)",
+          "oklch(49.29% 0.0181 154.16)",
+          "oklch(60.71% 0.0181 154.16)",
+          "oklch(72.14% 0.0181 154.16)",
+          "oklch(83.57% 0.0181 154.16)",
+          "oklch(95% 0.0181 154.16)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(26.43% 0.0000 89.88)",
+          "oklch(37.86% 0.0000 89.88)",
+          "oklch(49.29% 0.0000 89.88)",
+          "oklch(60.71% 0.0000 89.88)",
+          "oklch(72.14% 0.0000 89.88)",
+          "oklch(83.57% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Canvas",
+        "tonalRamp": [
+          "oklch(15% 0.0034 145.55)",
+          "oklch(26.43% 0.0034 145.55)",
+          "oklch(37.86% 0.0034 145.55)",
+          "oklch(49.29% 0.0034 145.55)",
+          "oklch(60.71% 0.0034 145.55)",
+          "oklch(72.14% 0.0034 145.55)",
+          "oklch(83.57% 0.0034 145.55)",
+          "oklch(95% 0.0034 145.55)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "tonalRamp": [
+          "oklch(15% 0.0076 151.88)",
+          "oklch(26.43% 0.0076 151.88)",
+          "oklch(37.86% 0.0076 151.88)",
+          "oklch(49.29% 0.0076 151.88)",
+          "oklch(60.71% 0.0076 151.88)",
+          "oklch(72.14% 0.0076 151.88)",
+          "oklch(83.57% 0.0076 151.88)",
+          "oklch(95% 0.0076 151.88)"
+        ]
+      },
+      "field-line": {
+        "role": "neutral",
+        "displayName": "Field Line",
+        "tonalRamp": [
+          "oklch(15% 0.0101 155.08)",
+          "oklch(26.43% 0.0101 155.08)",
+          "oklch(37.86% 0.0101 155.08)",
+          "oklch(49.29% 0.0101 155.08)",
+          "oklch(60.71% 0.0101 155.08)",
+          "oklch(72.14% 0.0101 155.08)",
+          "oklch(83.57% 0.0101 155.08)",
+          "oklch(95% 0.0101 155.08)"
+        ]
+      },
+      "proof-sage": {
+        "role": "neutral",
+        "displayName": "Proof Sage",
+        "tonalRamp": [
+          "oklch(15% 0.0135 134.90)",
+          "oklch(26.43% 0.0135 134.90)",
+          "oklch(37.86% 0.0135 134.90)",
+          "oklch(49.29% 0.0135 134.90)",
+          "oklch(60.71% 0.0135 134.90)",
+          "oklch(72.14% 0.0135 134.90)",
+          "oklch(83.57% 0.0135 134.90)",
+          "oklch(95% 0.0135 134.90)"
+        ]
+      },
+      "danger": {
+        "role": "semantic",
+        "displayName": "Danger",
+        "tonalRamp": [
+          "oklch(15% 0.1534 25.10)",
+          "oklch(26.43% 0.1534 25.10)",
+          "oklch(37.86% 0.1534 25.10)",
+          "oklch(49.29% 0.1534 25.10)",
+          "oklch(60.71% 0.1534 25.10)",
+          "oklch(72.14% 0.1534 25.10)",
+          "oklch(83.57% 0.1534 25.10)",
+          "oklch(95% 0.1534 25.10)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Page headline",
+        "purpose": "Standard workspace page headings."
+      },
+      "title": {
+        "displayName": "Section title",
+        "purpose": "Form and settings sections."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Base application text."
+      },
+      "field": {
+        "displayName": "Field",
+        "purpose": "Text entry."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Persistent control labels."
+      },
+      "action": {
+        "displayName": "Action",
+        "purpose": "Primary and secondary button labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "qr-paper",
+        "value": "0 8px 24px #324c3010",
+        "purpose": "Separate paper from the proofing stage."
+      },
+      {
+        "name": "selected-segment",
+        "value": "0 2px 5px #1b352211",
+        "purpose": "Lift the selected segmented choice."
+      },
+      {
+        "name": "toast",
+        "value": "0 8px 28px #18382e24",
+        "purpose": "Transient feedback."
+      },
+      {
+        "name": "dialog",
+        "value": "0 20px 80px #132e3530",
+        "purpose": "Modal separation."
+      },
+      {
+        "name": "input-focus",
+        "value": "0 0 0 3px #1c514314",
+        "purpose": "Focused input halo."
+      }
+    ],
+    "motion": [
+      {
+        "name": "field-transition",
+        "value": "150ms ease",
+        "purpose": "Input border and focus shadow."
+      },
+      {
+        "name": "button-transition",
+        "value": "160ms ease",
+        "purpose": "Button fill and press movement."
+      },
+      {
+        "name": "drawer-toast",
+        "value": "200ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Drawer movement and toast entry."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none; transition: none; scroll-behavior: auto",
+        "purpose": "Honor prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide-min",
+        "value": "1500px"
+      },
+      {
+        "name": "compact-desktop-max",
+        "value": "1190px"
+      },
+      {
+        "name": "narrow-desktop-max",
+        "value": "980px"
+      },
+      {
+        "name": "drawer-max",
+        "value": "800px"
+      },
+      {
+        "name": "single-column-max",
+        "value": "640px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Compact primary action with keyboard focus and press feedback.",
+      "html": "<button class=\"ds-button-primary\">Crear QR dinámico</button>",
+      "css": ".ds-button-primary{font-family:var(--font,Manrope,Arial,sans-serif);display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 19px;min-height:43px;border-radius:8px;font-size:12px;font-weight:750;cursor:pointer;transition:background .16s,transform .16s;border:0;background:var(--green,#1c5143);color:var(--surface,#fff);}.ds-button-primary:hover:not(:disabled){background:var(--green-dark,#153d33);}.ds-button-primary:focus-visible{outline:2px solid var(--green,#1c5143);outline-offset:4px;}.ds-button-primary:active:not(:disabled){transform:translateY(1px)}.ds-button-primary:disabled{opacity:.48;cursor:not-allowed}@media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none;animation:none}}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Compact secondary action with keyboard focus and press feedback.",
+      "html": "<button class=\"ds-button-secondary\">Descargar QR</button>",
+      "css": ".ds-button-secondary{font-family:var(--font,Manrope,Arial,sans-serif);display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 19px;min-height:43px;border-radius:8px;font-size:12px;font-weight:750;cursor:pointer;transition:background .16s,transform .16s;border:1px solid #d7dfd9;background:var(--surface,#fff);color:var(--ink,#202c29);}.ds-button-secondary:hover:not(:disabled){background:#f0f5f1;}.ds-button-secondary:focus-visible{outline:2px solid var(--green,#1c5143);outline-offset:4px;}.ds-button-secondary:active:not(:disabled){transform:translateY(1px)}.ds-button-secondary:disabled{opacity:.48;cursor:not-allowed}@media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none;animation:none}}"
+    },
+    {
+      "name": "Destination Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "A visible label, corrected placeholder, and forest focus halo.",
+      "html": "<label class=\"ds-label\" for=\"ds-destination\">Enlace de destino</label><input class=\"ds-input\" id=\"ds-destination\" placeholder=\"https://tusitio.com\" type=\"url\">",
+      "css": ".ds-label{font-family:var(--font,Manrope,Arial,sans-serif);display:block;font-size:11px;font-weight:750;margin-bottom:9px;color:var(--ink,#202c29)}.ds-input{font-family:var(--font,Manrope,Arial,sans-serif);padding:12px 14px;border:1px solid #d8dfda;border-radius:8px;background:var(--surface,#fff);color:var(--ink,#202c29);font-size:13px;transition:border-color .15s,box-shadow .15s;max-width:100%}.ds-input::placeholder{color:#68736b}.ds-input:focus{outline:none;border-color:var(--green,#1c5143);box-shadow:0 0 0 3px #1c514314}.ds-input[aria-invalid=\"true\"]{border-color:var(--danger,#a22d2d)}@media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none;animation:none}}"
+    },
+    {
+      "name": "Workspace Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Selected workspace navigation with an inline SVG icon.",
+      "html": "<nav aria-label=\"Espacio de trabajo\"><button class=\"ds-nav\" aria-current=\"page\"><svg width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><path d=\"M14 14h3v3h4v4h-7z\"/></svg>Mis códigos QR<span class=\"ds-count\">3</span></button></nav>",
+      "css": ".ds-nav{font-family:var(--font,Manrope,Arial,sans-serif);display:flex;align-items:center;gap:11px;min-height:44px;padding:11px 12px;border:0;border-radius:8px;background:#edf4ed;color:var(--green,#1c5143);font-size:12px;font-weight:750;cursor:pointer;width:100%}.ds-nav:hover{background:#f1f5f1}.ds-nav:focus-visible{outline:2px solid var(--green,#1c5143);outline-offset:4px;}.ds-count{margin-left:auto;display:grid;place-items:center;min-width:22px;height:21px;background:#dce9de;border-radius:5px;font-size:10px}@media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none;animation:none}}"
+    },
+    {
+      "name": "Record Status",
+      "kind": "chip",
+      "refersTo": "status-chip",
+      "description": "Passive state with dot and explicit text.",
+      "html": "<span class=\"ds-status\"><span></span>Activo</span>",
+      "css": ".ds-status{font-family:var(--font,Manrope,Arial,sans-serif);display:inline-flex;align-items:center;gap:6px;font-size:10px;color:#456d44;background:#e9f1e6;padding:6px 9px;border-radius:5px}.ds-status>span{height:5px;width:5px;background:currentColor;border-radius:50%}@media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none;animation:none}}"
+    },
+    {
+      "name": "Form Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Flat bordered container with a separated section.",
+      "html": "<section class=\"ds-panel\"><div class=\"ds-section\"><h2>¿A dónde vamos?</h2><p>Elegí el nombre y el destino de tu QR.</p></div><div class=\"ds-section\"><h2>Hacelo tuyo.</h2><p>Colores, formas y tu logo.</p></div></section>",
+      "css": ".ds-panel{font-family:var(--font,Manrope,Arial,sans-serif);background:var(--surface,#fff);border:1px solid var(--line,#e2e7e3);border-radius:var(--radius,12px);color:var(--ink,#202c29)}.ds-section{padding:27px 29px}.ds-section+.ds-section{border-top:1px solid var(--line,#e2e7e3)}.ds-section h2{font-size:16px;font-weight:750;line-height:1.4;letter-spacing:-.3px;margin:0}.ds-section p{font-size:11px;line-height:1.7;color:var(--muted,#64716b);margin:5px 0 0}@media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none;animation:none}}"
+    },
+    {
+      "name": "QR Shape Option",
+      "kind": "custom",
+      "refersTo": "shape-option",
+      "description": "A selected module-style option with a literal geometry sample.",
+      "html": "<button class=\"ds-shape\" aria-pressed=\"true\"><span class=\"ds-sample\" aria-hidden=\"true\"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Redondeados<svg class=\"ds-check\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"m5 12 4 4L19 6\"/></svg></button>",
+      "css": ".ds-shape{font-family:var(--font,Manrope,Arial,sans-serif);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:83px;min-width:100px;border:1px solid #719780;border-radius:8px;position:relative;font-size:10px;font-weight:550;background:#f3f7f2;color:#244f3a;cursor:pointer}.ds-shape:hover{background:#f3f7f2}.ds-shape:focus-visible{outline:2px solid var(--green,#1c5143);outline-offset:4px;}.ds-sample{display:grid;grid-template-columns:repeat(3,5px);grid-template-rows:repeat(3,5px);gap:3px}.ds-sample i{background:currentColor;border-radius:2px}.ds-check{position:absolute;right:7px;top:7px;color:#406b4e}@media(prefers-reduced-motion:reduce){[class^=\"ds-\"]{transition:none;animation:none}}"
+    },
+    {
+      "name": "Venue Row",
+      "kind": "custom",
+      "description": "Compact venue identity, link counts, menu status, and wrapping secondary actions. The standard labeled form above creates or renames venues.",
+      "html": "<article class=\"ds-venue\"><div><h2>Café Centro</h2><p>3 enlaces · 3 activos · Menú activo</p></div><div class=\"ds-venue-actions\"><button class=\"ds-action\">Ver enlaces</button><button class=\"ds-action\">Editar menú</button></div></article>",
+      "css": ".ds-venue{font-family:var(--font,Manrope,Arial,sans-serif);color:var(--ink,#202c29);display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-bottom:1px solid var(--line,#e2e7e3)}.ds-venue h2{font-size:16px;font-weight:750;line-height:1.4;letter-spacing:-.3px;margin:0;overflow-wrap:anywhere}.ds-venue p{color:var(--muted,#64716b);font-size:12px;line-height:1.7;margin:8px 0 0}.ds-venue-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}@media(max-width:980px){.ds-venue{align-items:flex-start;flex-direction:column}}.ds-action{font:inherit;display:inline-flex;align-items:center;justify-content:center;padding:12px 19px;min-height:43px;border:1px solid #d7dfd9;border-radius:8px;font-size:12px;font-weight:750;background:var(--surface,#fff);color:var(--ink,#202c29);cursor:pointer;transition:background .16s,transform .16s}.ds-action:hover:not(:disabled){background:#f0f5f1}.ds-action:focus-visible{outline:2px solid var(--green,#1c5143);outline-offset:4px}.ds-action:active:not(:disabled){transform:translateY(1px)}.ds-action:disabled{opacity:.48;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-action{transition:none}}"
+    },
+    {
+      "name": "NFC Choices and Status",
+      "kind": "custom",
+      "description": "Explicit native overwrite and lock choices, permanent-lock warning, secondary write action, and live sage status. Availability and busy conditions stay visible in text.",
+      "html": "<section class=\"ds-nfc\"><h2>Tu enlace en una etiqueta NFC</h2><p>El QR y el NFC comparten esta URL corta.</p><label class=\"ds-check-field\"><input type=\"checkbox\">Reemplazar el contenido actual de la etiqueta</label><label class=\"ds-check-field\"><input type=\"checkbox\" checked>Bloquear contra reescritura después de grabar</label><p class=\"ds-warning\">El bloqueo físico es permanente.</p><button class=\"ds-action\">Grabar y bloquear NFC</button><p class=\"ds-nfc-status\" role=\"status\">Etiqueta grabada.</p></section>",
+      "css": ".ds-nfc{font-family:var(--font,Manrope,Arial,sans-serif);color:var(--ink,#202c29);padding:22px 0;border-top:1px solid var(--line,#e2e7e3);margin-top:22px}.ds-nfc h2{font-size:14px;font-weight:750;line-height:1.4;letter-spacing:-.3px;margin:0}.ds-nfc p{font-size:12px;line-height:1.7;color:var(--muted,#64716b);margin:12px 0}.ds-check-field{display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.6;margin:14px 0}.ds-check-field input{width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--green,#1c5143)}.ds-check-field input:focus-visible{outline:2px solid var(--green,#1c5143);outline-offset:4px}.ds-nfc .ds-warning{color:var(--danger,#a22d2d)}.ds-nfc .ds-nfc-status{padding:12px;background:var(--proof-sage,#eaf0e7);color:var(--green,#1c5143);border-radius:8px}.ds-action{font:inherit;display:inline-flex;align-items:center;justify-content:center;padding:12px 19px;min-height:43px;border:1px solid #d7dfd9;border-radius:8px;font-size:12px;font-weight:750;background:var(--surface,#fff);color:var(--ink,#202c29);cursor:pointer;transition:background .16s,transform .16s}.ds-action:hover:not(:disabled){background:#f0f5f1}.ds-action:focus-visible{outline:2px solid var(--green,#1c5143);outline-offset:4px}.ds-action:active:not(:disabled){transform:translateY(1px)}.ds-action:disabled{opacity:.48;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-action{transition:none}}"
+    },
+    {
+      "name": "Short-Link Output",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "Saved short links put the permanent URL, copy action, and NFC section directly after the heading. QR styling is optional; the full proof remains available.",
+      "html": "<section class=\"ds-short-output\"><div><h2>Tu URL corta</h2><label for=\"ds-short-url\">Enlace permanente del QR</label><div class=\"ds-short-copy\"><input id=\"ds-short-url\" readonly value=\"https://qr.example/r/cafe\"><button class=\"ds-copy\" aria-label=\"Copiar enlace permanente\"><svg width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\"/><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"/></svg></button></div><p>Compartí este enlace o grabalo en NFC.</p></div><div><h2>Tu enlace en una etiqueta NFC</h2><p>El QR y el NFC comparten esta URL corta. Si pausás el enlace, ambos dejan de redirigir.</p><button class=\"ds-action\">Grabar NFC</button></div></section>",
+      "css": ".ds-short-output{font-family:var(--font,Manrope,Arial,sans-serif);color:var(--ink,#202c29);display:grid;grid-template-columns:1fr 1fr;gap:28px;padding:24px;background:var(--surface,#fff);border:1px solid var(--line,#e2e7e3);border-radius:12px;margin-bottom:24px}.ds-short-output>div{min-width:0}.ds-short-output h2{font-size:16px;font-weight:750;line-height:1.4;letter-spacing:-.3px;margin:0 0 16px}.ds-short-output label{display:block;font-size:10px;font-weight:700}.ds-short-output p{font-size:12px;line-height:1.7;color:var(--muted,#64716b);margin:12px 0}.ds-short-copy{display:flex;gap:4px;margin:9px 0}.ds-short-copy input{font:inherit;flex:1;min-width:0;width:0;padding:9px;border:1px solid #d8dfda;border-radius:8px;font-size:10px;color:var(--ink,#202c29);background:var(--surface,#fff)}.ds-short-copy input:focus{outline:none;border-color:var(--green,#1c5143);box-shadow:0 0 0 3px #1c514314}.ds-copy{display:grid;place-items:center;width:34px;height:34px;flex-shrink:0;border:0;border-radius:6px;background:none;color:var(--ink,#202c29);cursor:pointer}.ds-copy:hover{background:#edf3ed}.ds-copy:focus-visible{outline:2px solid var(--green,#1c5143);outline-offset:4px}@media(max-width:640px){.ds-short-output{grid-template-columns:1fr;gap:24px;padding:20px}}.ds-action{font:inherit;display:inline-flex;align-items:center;justify-content:center;padding:12px 19px;min-height:43px;border:1px solid #d7dfd9;border-radius:8px;font-size:12px;font-weight:750;background:var(--surface,#fff);color:var(--ink,#202c29);cursor:pointer;transition:background .16s,transform .16s}.ds-action:hover:not(:disabled){background:#f0f5f1}.ds-action:focus-visible{outline:2px solid var(--green,#1c5143);outline-offset:4px}.ds-action:active:not(:disabled){transform:translateY(1px)}.ds-action:disabled{opacity:.48;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-action{transition:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Personal QR Workbench",
+    "overview": "The personal QR workbench puts a printable artifact beside precise, compact controls. Chalk-white surfaces, forest-green actions, and a pale sage proofing canvas make the interface calm and practical. Geometric QR samples supply its imagery; the controls carry the same restrained geometry.\n\nThe approved direction is a clear, compact Spanish-language panel with a live preview. Manrope, fine borders, and modest rounding hold the system together across the editor, library, venues, settings, and access screens. Venue organization, external-menu links, short URLs, and NFC extend this same workbench without introducing a new visual identity. This record describes the implemented source, including the mobile live-proof strip and corrected placeholder color.",
+    "keyCharacteristics": [
+      "Compact controls with clear labels and quiet supporting text.",
+      "Forest actions on white surfaces and a pale sage QR canvas.",
+      "Real QR geometry as the signature visual material.",
+      "Continuous proof visibility while editing on desktop and mobile."
+    ],
+    "rules": [
+      {
+        "name": "The Forest Action Rule",
+        "body": "Use deep forest for primary actions, active navigation, and focus. Keep large working surfaces white or pale neutral green.",
+        "section": "colors"
+      },
+      {
+        "name": "The Proof Stays Visible Rule",
+        "body": "Keep a live QR visible while its controls are being edited: the desktop proof column sticks beside the form, and the mobile compact proof sticks above it.",
+        "section": "layout"
+      },
+      {
+        "name": "The Quiet Surface Rule",
+        "body": "Separate ordinary containers with fine borders and tonal changes. Reserve soft elevation for the QR paper, selected segments, dialogs, and transient feedback.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep labels visible and make selection explicit with borders, fills, and checked or pressed states.",
+      "Do preserve the live proof while editing and the quiet margin surrounding the QR itself.",
+      "Do use the corrected supporting-text and placeholder colors from the token layer.",
+      "Do retain visible keyboard focus and respect reduced-motion preferences.",
+      "Do show saved, unsaved, paused, and local-only conditions in words as well as visual cues."
+    ],
+    "donts": [
+      "Don't replace the live QR artifact with a decorative illustration.",
+      "Don't use interface accent choices to override a user’s QR foreground, background, shape, or logo.",
+      "Don't promote one-off layout values or retired lower-contrast text overrides into new reusable tokens."
+    ]
+  }
+}

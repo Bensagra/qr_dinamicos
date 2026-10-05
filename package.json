@@ -1,0 +1,39 @@
+{
+  "name": "qr-studio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "test:browser": "node scripts/verify-browser.mjs",
+    "test:venues": "node scripts/verify-venues.mjs",
+    "test:ios": "xcodebuild -project ios/QRStudio/QRStudio.xcodeproj -scheme QRStudio -sdk iphonesimulator -configuration Debug -derivedDataPath /tmp/qr-studio-ios-build CODE_SIGNING_ALLOWED=NO build"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.117.2",
+    "lucide-react": "^0.468.0",
+    "next": "16.3.8",
+    "qr-code-styling": "^1.9.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@playwright/test": "^1.58.0",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.8",
+    "jsqr": "^1.4.0",
+    "pngjs": "^7.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5"
+  }
+}
