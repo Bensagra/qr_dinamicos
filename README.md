@@ -5,14 +5,14 @@ Panel en español para administrar **locales, QR dinámicos y enlaces cortos par
 ## Locales, URLs cortas y menús
 
 1. En **Mis locales**, creá una sección por local. Podés renombrarla sin afectar sus enlaces.
-2. **Agregar menú** crea el QR de menú del local. Pegá la URL donde ya está publicado (tu web, una plataforma de cartas o un PDF externo). Solo hay un enlace designado como menú por local; **Editar menú** conserva su URL corta.
+2. Cada local nace con dos enlaces listos: **NFC** (URL corta para grabar en etiquetas, con su QR) y **Menú** (QR de menú). Ambos apuntan a una URL por defecto (`NEXT_PUBLIC_DEFAULT_DESTINATION_URL`, o `https://example.com/` si no la definís). Con **Editar NFC** y **Editar menú** cambiás el destino por el definitivo (tu web, una plataforma de cartas o un PDF externo) sin cambiar la URL corta. Los locales existentes sin enlaces los reciben al abrir el panel. Solo hay un enlace designado como menú por local.
 3. **Acortar una URL** crea un enlace estable `https://tu-dominio/r/identificador`. Elegí su local y copiá la URL para compartirla o grabarla en NFC. También tiene un QR descargable y personalizable.
 4. La biblioteca permite filtrar por local, uso y estado. Cada registro puede tener un destino distinto: menú, reseñas, WhatsApp, promociones, etc.
 5. Editar el destino no cambia el QR ni el contenido que ya grabaste en NFC. Pausar impide la redirección del enlace y de todos los QR/etiquetas que lo usan; reactivar lo recupera. Si necesitás pausar NFC y QR por separado, creá dos enlaces.
 
 **La app solo redirige:** no carga menús ni archivos públicos, no ofrece un editor de cartas ni muestra una página intermedia. El acortador es propio, sin dependencia de Bitly u otro proveedor. La longitud depende también de tu dominio: elegí uno corto y definitivo.
 
-Los locales con enlaces no se pueden eliminar hasta mover o eliminar esos enlaces. Los QR anteriores aparecen en **Sin local** y pueden asignarse sin cambiar su identificador.
+Los locales con enlaces configurados no se pueden eliminar hasta mover o eliminar esos enlaces. Los enlaces por defecto que nunca se editaron ni se abrieron se eliminan junto con el local. Los QR anteriores aparecen en **Sin local** y pueden asignarse sin cambiar su identificador.
 
 ## Grabar y bloquear NFC
 

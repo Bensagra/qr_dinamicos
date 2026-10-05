@@ -2,22 +2,46 @@ import { randomBytes, randomUUID } from "node:crypto";
 import { appMode } from "./config";
 import { authorize, HttpError } from "./http";
 import { localStore } from "./local-store";
-import { qrInputSchema, slugPattern, venueInputSchema, type Venue, type QRRecord } from "./qr";
+import { isPlaceholder, qrInputSchema, slugPattern, venueDefaultLinks, venueInputSchema, type QRInput, type Venue, type QRRecord } from "./qr";
 import { supabase } from "./supabase";
 const fields =
   "id,slug,name,destination,design,active,venue_id,kind,scans,created_at,updated_at";
+const newSlug = () => randomBytes(9).toString("base64url");
+function localRecord(input: QRInput, timestamp: string): QRRecord {
+  return { ...input, id: randomUUID(), slug: newSlug(), scans: 0, created_at: timestamp, updated_at: timestamp };
+}
+// Every venue starts with an NFC short link and a menu link pointing to the default destination.
+// Venues without any link (new or created before this existed) get them when listed.
+const unseeded = (venues: Venue[], records: QRRecord[]) =>
+  venues.filter((v) => !records.some((r) => r.venue_id === v.id));
 export async function listQRs() {
   const db = await authorize();
   if (!db)
-    return localStore((records) =>
-      [...records].sort((a, b) => b.created_at.localeCompare(a.created_at)),
-    );
-  const { data, error } = await db
-    .from("qr_codes")
-    .select(fields)
-    .order("created_at", { ascending: false });
+    return localStore((records, venues) => {
+      const timestamp = new Date().toISOString();
+      for (const venue of unseeded(venues, records))
+        records.push(...venueDefaultLinks(venue).map((link) => localRecord(link, timestamp)));
+      return [...records].sort((a, b) => b.created_at.localeCompare(a.created_at));
+    }, true);
+  const list = async () => {
+    const { data, error } = await db
+      .from("qr_codes")
+      .select(fields)
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return data as QRRecord[];
+  };
+  const records = await list();
+  const { data: venues, error } = await db.from("venues").select("id,name,created_at");
   if (error) throw error;
-  return data as QRRecord[];
+  const pending = unseeded(venues, records);
+  if (!pending.length) return records;
+  const { error: seedError } = await db
+    .from("qr_codes")
+    .insert(pending.flatMap(venueDefaultLinks).map((link) => ({ ...link, slug: newSlug() })));
+  // 23505: a concurrent request already created this venue's menu.
+  if (seedError && seedError.code !== "23505") throw seedError;
+  return list();
 }
 export async function saveQR(input: unknown, id?: string, requestOrigin?: string) {
   const db = await authorize();
@@ -54,14 +78,7 @@ export async function saveQR(input: unknown, id?: string, requestOrigin?: string
         Object.assign(record, parsed, { updated_at: timestamp });
         return record;
       }
-      const record: QRRecord = {
-        ...parsed,
-        id: randomUUID(),
-        slug: randomBytes(9).toString("base64url"),
-        scans: 0,
-        created_at: timestamp,
-        updated_at: timestamp,
-      };
+      const record = localRecord(parsed, timestamp);
       records.push(record);
       return record;
     }, true);
@@ -72,7 +89,7 @@ export async function saveQR(input: unknown, id?: string, requestOrigin?: string
         .eq("id", id)
     : db
         .from("qr_codes")
-        .insert({ ...parsed, slug: randomBytes(9).toString("base64url") });
+        .insert({ ...parsed, slug: newSlug() });
   const { data, error } = await query.select(fields).single();
   if (error) {
     if (error.code === "23505") throw new HttpError("Este local ya tiene un menú. Editá su enlace para conservar el QR.", 409);
@@ -126,7 +143,7 @@ export async function listVenues(): Promise<Venue[]> {
 export async function saveVenue(input: unknown, id?: string): Promise<Venue> {
   const db = await authorize();
   const parsed = venueInputSchema.parse(input);
-  if (!db) return localStore((_records, venues) => {
+  if (!db) return localStore((records, venues) => {
     if (id) {
       const venue = venues.find(v => v.id === id);
       if (!venue) throw new HttpError("El local ya no existe.", 404);
@@ -135,22 +152,40 @@ export async function saveVenue(input: unknown, id?: string): Promise<Venue> {
     }
     const venue = { ...parsed, id: randomUUID(), created_at: new Date().toISOString() };
     venues.push(venue);
+    records.push(...venueDefaultLinks(venue).map((link) => localRecord(link, venue.created_at)));
     return venue;
   }, true);
   const query = id ? db.from("venues").update(parsed).eq("id", id) : db.from("venues").insert(parsed);
   const { data, error } = await query.select("id,name,created_at").single();
   if (error?.code === "PGRST116") throw new HttpError("El local ya no existe.", 404);
   if (error) throw error;
+  if (!id) {
+    const { error: seedError } = await db
+      .from("qr_codes")
+      .insert(venueDefaultLinks(data).map((link) => ({ ...link, slug: newSlug() })));
+    if (seedError) throw seedError;
+  }
   return data;
 }
 export async function removeVenue(id: string) {
   const db = await authorize();
+  const inUse = "Mové o eliminá los enlaces del local antes de eliminarlo.";
+  // Untouched default links are removed with the venue; edited or opened ones block deletion.
   if (!db) return localStore((records, venues) => {
-    if (records.some(r => r.venue_id === id)) throw new HttpError("Mové o eliminá los enlaces del local antes de eliminarlo.", 409);
+    const links = records.filter(r => r.venue_id === id);
+    if (links.some(r => !isPlaceholder(r))) throw new HttpError(inUse, 409);
     const index = venues.findIndex(v => v.id === id);
     if (index === -1) throw new HttpError("El local ya no existe.", 404);
     venues.splice(index, 1);
+    records.splice(0, records.length, ...records.filter(r => r.venue_id !== id));
   }, true);
+  const { data: links, error: linksError } = await db.from("qr_codes").select(fields).eq("venue_id", id);
+  if (linksError) throw linksError;
+  if ((links as QRRecord[]).some(r => !isPlaceholder(r))) throw new HttpError(inUse, 409);
+  if (links.length) {
+    const { error: cleanupError } = await db.from("qr_codes").delete().in("id", links.map(r => r.id));
+    if (cleanupError) throw cleanupError;
+  }
   const { error } = await db.from("venues").delete().eq("id", id);
   if (error?.code === "23503") throw new HttpError("Mové o eliminá los enlaces del local antes de eliminarlo.", 409);
   if (error) throw error;

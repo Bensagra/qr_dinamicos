@@ -643,9 +643,9 @@ export function Studio({
               </p>
             </section>
           ) : view === "venues" ? (
-            <VenuesPanel venues={venues} records={records} loading={loading} onChange={setVenues} onError={setError}
+            <VenuesPanel venues={venues} records={records} loading={loading} onChange={setVenues} onRecordsChanged={() => void load()} onError={setError}
               onOpen={(id) => { setVenueFilter(id); setKindFilter("all"); setSearch(""); setFilter("all"); navigate("library"); }}
-              onMenu={(venue) => { const menu = records.find(r => r.venue_id === venue.id && r.kind === "menu"); if (menu) edit(menu); else newQR(venue.id, "menu"); }} />
+              onEdit={edit} />
           ) : view === "editor" ? (
             <>
               <div className="page-heading">

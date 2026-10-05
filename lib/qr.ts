@@ -78,4 +78,21 @@ export const defaultDesign: QRDesign = {
   corners: "square",
   logo: null,
 };
+// Placeholder destination for the links every venue starts with; edit them afterwards.
+const configuredDefault = process.env.NEXT_PUBLIC_DEFAULT_DESTINATION_URL?.trim();
+export const defaultDestination =
+  configuredDefault && validDestination(configuredDefault) ? configuredDefault : "https://example.com/";
+export function venueDefaultLinks(venue: Venue): QRInput[] {
+  return (["short", "menu"] as const).map((kind) => ({
+    name: `${kind === "menu" ? "Menú" : "NFC"} · ${venue.name}`.slice(0, 80),
+    destination: defaultDestination,
+    design: { ...defaultDesign },
+    active: true,
+    venue_id: venue.id,
+    kind,
+  }));
+}
+// Untouched default link: never edited nor opened, so it can go away with its venue.
+export const isPlaceholder = (record: QRRecord) =>
+  record.destination === defaultDestination && record.scans === 0;
 export const slugPattern = /^[A-Za-z0-9_-]{12}$/;
