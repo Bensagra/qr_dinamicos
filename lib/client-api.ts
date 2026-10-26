@@ -1,7 +1,8 @@
 export async function api<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     ...options,
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    // FormData (photo uploads) sets its own multipart content type.
+    headers: options?.body instanceof FormData ? options.headers : { "Content-Type": "application/json", ...options?.headers },
   });
   if (response.status === 204) return undefined as T;
   const result = await response.json();

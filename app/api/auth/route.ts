@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { body, checkOrigin, fail, HttpError } from "@/lib/http";
+import { body, checkOrigin, fail, HttpError, session } from "@/lib/http";
 import { appMode } from "@/lib/config";
 import { supabase } from "@/lib/supabase";
 export async function POST(request: Request) {
@@ -11,8 +11,6 @@ export async function POST(request: Request) {
     const input = z
       .object({ email: z.email(), password: z.string().min(1).max(200) })
       .parse(await body(request));
-    if (input.email.toLowerCase() !== process.env.ADMIN_EMAIL?.toLowerCase())
-      throw new HttpError("Email o contraseña incorrectos.", 401);
     const db = await supabase();
     const { error } = await db.auth.signInWithPassword(input);
     if (error)
@@ -22,6 +20,13 @@ export async function POST(request: Request) {
           : "Email o contraseña incorrectos.",
         error.status === 429 ? 429 : 401,
       );
+    // Only the owner and invited venue users may keep the session.
+    try {
+      await session();
+    } catch (denied) {
+      await db.auth.signOut();
+      throw denied;
+    }
     return NextResponse.json({ ok: true });
   } catch (error) {
     return fail(error);

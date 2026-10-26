@@ -45,8 +45,17 @@ import { QRPreview, type QRHandle } from "./qr-preview";
 
 import { VenuesPanel } from "./venues-panel";
 import { NFCPanel } from "./nfc-panel";
+import { MemberHome } from "./member-home";
 
 type View = "editor" | "library" | "settings" | "venues";
+type Me = { role: "admin" } | { role: "member"; email: string; venues: Venue[] };
+// Venue users only get their menu editor; the owner gets the whole panel.
+async function fetchPanel() {
+  const me = await api<Me>("/api/me");
+  if (me.role === "member") return { member: me, records: [], venues: [] };
+  const [result, locations] = await Promise.all([api<{ records: QRRecord[] }>("/api/qrs"), api<{ venues: Venue[] }>("/api/venues")]);
+  return { member: null, records: result.records, venues: locations.venues };
+}
 const emptyInput = (): QRInput => ({
   name: "",
   destination: "",
@@ -170,6 +179,7 @@ export function Studio({
   const origin = configuredOrigin;
   const [loading, setLoading] = useState(mode !== "setup");
   const [login, setLogin] = useState(false);
+  const [member, setMember] = useState<Extract<Me, { role: "member" }> | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
@@ -183,7 +193,7 @@ export function Studio({
   const fileRef = useRef<HTMLInputElement>(null);
   const dirty = selected
     ? input.name !== selected.name ||
-      input.destination !== selected.destination ||
+      (input.destination || null) !== selected.destination ||
       input.active !== selected.active ||
       input.venue_id !== selected.venue_id || input.kind !== selected.kind ||
       (Object.keys(defaultDesign) as (keyof QRDesign)[]).some(
@@ -205,9 +215,10 @@ export function Studio({
 
   async function load() {
     try {
-      const [result, locations] = await Promise.all([api<{ records: QRRecord[] }>("/api/qrs"), api<{ venues: Venue[] }>("/api/venues")]);
-      setVenues(locations.venues);
-      setRecords(result.records);
+      const panel = await fetchPanel();
+      setMember(panel.member);
+      setVenues(panel.venues);
+      setRecords(panel.records);
       setLogin(false);
       setError("");
     } catch (e) {
@@ -220,11 +231,12 @@ export function Studio({
   useEffect(() => {
     if (mode === "setup") return;
     let current = true;
-    Promise.all([api<{ records: QRRecord[] }>("/api/qrs"), api<{ venues: Venue[] }>("/api/venues")])
-      .then(([result, locations]) => {
+    fetchPanel()
+      .then((panel) => {
         if (current) {
-          setRecords(result.records);
-          setVenues(locations.venues);
+          setMember(panel.member);
+          setRecords(panel.records);
+          setVenues(panel.venues);
           setLogin(false);
         }
       })
@@ -329,7 +341,9 @@ export function Studio({
       setNotice(
         selected
           ? "Cambios guardados. Tu QR conserva el mismo enlace."
-          : "Tu QR está listo. Ya podés descargarlo.",
+          : record.destination
+            ? "Tu QR está listo. Ya podés descargarlo."
+            : "Tu QR está listo. Al escanearlo por primera vez vas a elegir su destino.",
       );
     } catch (e) {
       setError((e as Error).message);
@@ -459,12 +473,13 @@ export function Studio({
     reader.readAsDataURL(file);
   }
   if (login) return <Login onSuccess={() => void load()} />;
+  if (member) return <MemberHome email={member.email} venues={member.venues} onLogout={() => { setMember(null); setLogin(true); }} />;
   const visible = records.filter(
     (r) =>
       (venueFilter === "all" || (venueFilter === "none" ? !r.venue_id : r.venue_id === venueFilter)) &&
       (kindFilter === "all" || r.kind === kindFilter) &&
       (filter === "all" || (filter === "active" ? r.active : !r.active)) &&
-      `${r.name} ${r.destination} ${r.slug}`.toLowerCase().includes(search.toLowerCase()),
+      `${r.name} ${r.destination ?? ""} ${r.slug}`.toLowerCase().includes(search.toLowerCase()),
   );
   return (
     <div className="app-shell">
@@ -766,7 +781,7 @@ export function Studio({
                           id="qr-url"
                           type="url"
                           placeholder="https://tusitio.com"
-                          value={input.destination}
+                          value={input.destination ?? ""}
                           onChange={(e) =>
                             setInput({ ...input, destination: e.target.value })
                           }
@@ -783,7 +798,8 @@ export function Studio({
                       ) : (
                         <p id="url-hint" className="field-hint">
                           Una web, tu WhatsApp, un menú o lo que quieras
-                          compartir.
+                          compartir. Si lo dejás vacío, lo elegís la primera
+                          vez que escanees el QR.
                         </p>
                       )}
                     </div>
@@ -1225,14 +1241,20 @@ export function Studio({
                         <button onClick={() => edit(record)}>
                           {record.name}
                         </button>
-                        <a
-                          href={record.destination}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {record.destination}
-                          <ArrowUpRight size={13} />
-                        </a>
+                        {record.destination ? (
+                          <a
+                            href={record.destination}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {record.destination}
+                            <ArrowUpRight size={13} />
+                          </a>
+                        ) : (
+                          <p className="pending-destination">
+                            Sin destino · se elige al escanearlo
+                          </p>
+                        )}
                         <span>
                           {venues.find(v => v.id === record.venue_id)?.name || "Sin local"} · {record.kind === "menu" ? "Menú" : record.kind === "short" ? "URL corta / NFC" : "QR"} · Creado el{" "}
                           {new Date(record.created_at).toLocaleDateString(

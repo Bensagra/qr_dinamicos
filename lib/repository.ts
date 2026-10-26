@@ -2,12 +2,15 @@ import { randomBytes, randomUUID } from "node:crypto";
 import { appMode } from "./config";
 import { authorize, HttpError } from "./http";
 import { localStore } from "./local-store";
-import { isPlaceholder, qrInputSchema, slugPattern, venueDefaultLinks, venueInputSchema, type QRInput, type Venue, type QRRecord } from "./qr";
+import { z } from "zod";
+import { destinationSchema, isPlaceholder, qrInputSchema, slugPattern, venueDefaultLinks, venueInputSchema, type QRInput, type Venue, type QRRecord } from "./qr";
 import { supabase } from "./supabase";
+import { venueFiles } from "./menu";
+import { removeFiles } from "./storage";
 const fields =
   "id,slug,name,destination,design,active,venue_id,kind,scans,created_at,updated_at";
-const newSlug = () => randomBytes(9).toString("base64url");
-function localRecord(input: QRInput, timestamp: string): QRRecord {
+export const newSlug = () => randomBytes(9).toString("base64url");
+export function localRecord(input: QRInput, timestamp: string): QRRecord {
   return { ...input, id: randomUUID(), slug: newSlug(), scans: 0, created_at: timestamp, updated_at: timestamp };
 }
 // Every venue starts with an NFC short link and a menu link pointing to the default destination.
@@ -43,21 +46,21 @@ export async function listQRs() {
   if (seedError && seedError.code !== "23505") throw seedError;
   return list();
 }
+// A QR pointing back into our redirect namespace can form a loop.
+function checkLoop(destination: string | null, requestOrigin?: string) {
+  const app = process.env.NEXT_PUBLIC_APP_URL || requestOrigin;
+  if (!destination || !app) return;
+  const url = new URL(destination);
+  if (url.origin === new URL(app).origin && url.pathname.startsWith("/r/"))
+    throw new HttpError(
+      "Usá el destino final, no el enlace de otro QR de este panel.",
+      400,
+    );
+}
 export async function saveQR(input: unknown, id?: string, requestOrigin?: string) {
   const db = await authorize();
   const parsed = qrInputSchema.parse(input);
-  // A QR pointing back into our redirect namespace can form a loop.
-  if (process.env.NEXT_PUBLIC_APP_URL || requestOrigin) {
-    const destination = new URL(parsed.destination);
-    if (
-      destination.origin === new URL(process.env.NEXT_PUBLIC_APP_URL || requestOrigin!).origin &&
-      destination.pathname.startsWith("/r/")
-    )
-      throw new HttpError(
-        "Usá el destino final, no el enlace de otro QR de este panel.",
-        400,
-      );
-  }
+  checkLoop(parsed.destination, requestOrigin);
   if (parsed.kind === "menu" && !parsed.venue_id)
     throw new HttpError("Asigná el menú a un local.", 400);
   if (db && parsed.venue_id) {
@@ -121,8 +124,8 @@ export async function resolveQR(
     return localStore((records) => {
       const record = records.find((r) => r.slug === slug && r.active);
       if (!record) return null;
-      if (count) record.scans += 1;
-      return record.destination;
+      if (count && record.destination) record.scans += 1;
+      return record.destination ?? "";
     }, count);
   const db = await supabase();
   const { data, error } = await db.rpc("resolve_qr", {
@@ -131,6 +134,52 @@ export async function resolveQR(
   });
   if (error) throw error;
   return data as string | null;
+}
+// An empty QR gets its destination the first time its owner scans it. Afterwards it only changes from the panel.
+const notFound = () => new HttpError("Este QR no existe o no es de tu cuenta.", 404);
+const configured = () => new HttpError("Este QR ya tiene destino. Podés cambiarlo desde el panel.", 409);
+async function findBySlug(db: NonNullable<Awaited<ReturnType<typeof authorize>>>, slug: string) {
+  const { data, error } = await db.from("qr_codes").select(fields).eq("slug", slug).maybeSingle();
+  if (error) throw error;
+  if (!data) throw notFound();
+  return data as QRRecord;
+}
+export async function emptyQR(slug: string): Promise<{ name: string }> {
+  const db = await authorize();
+  if (!slugPattern.test(slug)) throw notFound();
+  const record = db
+    ? await findBySlug(db, slug)
+    : await localStore((records) => records.find((r) => r.slug === slug));
+  if (!record) throw notFound();
+  if (record.destination) throw configured();
+  return { name: record.name };
+}
+export async function claimQR(slug: string, input: unknown, requestOrigin?: string) {
+  const db = await authorize();
+  if (!slugPattern.test(slug)) throw notFound();
+  const { destination } = z.object({ destination: destinationSchema }).parse(input);
+  checkLoop(destination, requestOrigin);
+  const timestamp = new Date().toISOString();
+  if (!db)
+    return localStore((records) => {
+      const record = records.find((r) => r.slug === slug);
+      if (!record) throw notFound();
+      if (record.destination) throw configured();
+      Object.assign(record, { destination, updated_at: timestamp });
+      return record;
+    }, true);
+  // Only while still empty, so two first scans can't both set it.
+  const { data, error } = await db
+    .from("qr_codes")
+    .update({ destination, updated_at: timestamp })
+    .eq("slug", slug)
+    .is("destination", null)
+    .select(fields)
+    .maybeSingle();
+  if (error) throw error;
+  if (data) return data as QRRecord;
+  await findBySlug(db, slug);
+  throw configured();
 }
 
 export async function listVenues(): Promise<Venue[]> {
@@ -171,14 +220,18 @@ export async function removeVenue(id: string) {
   const db = await authorize();
   const inUse = "Mové o eliminá los enlaces del local antes de eliminarlo.";
   // Untouched default links are removed with the venue; edited or opened ones block deletion.
-  if (!db) return localStore((records, venues) => {
+  if (!db) return localStore((records, venues, menus) => {
     const links = records.filter(r => r.venue_id === id);
     if (links.some(r => !isPlaceholder(r))) throw new HttpError(inUse, 409);
     const index = venues.findIndex(v => v.id === id);
     if (index === -1) throw new HttpError("El local ya no existe.", 404);
     venues.splice(index, 1);
     records.splice(0, records.length, ...records.filter(r => r.venue_id !== id));
-  }, true);
+    const files = [...menus.photos.filter(p => p.venue_id === id).map(p => p.path), ...(menus.pdfs[id] ? [menus.pdfs[id]] : [])];
+    menus.photos.splice(0, menus.photos.length, ...menus.photos.filter(p => p.venue_id !== id));
+    delete menus.pdfs[id];
+    return files;
+  }, true).then(files => removeFiles(files));
   const { data: links, error: linksError } = await db.from("qr_codes").select(fields).eq("venue_id", id);
   if (linksError) throw linksError;
   if ((links as QRRecord[]).some(r => !isPlaceholder(r))) throw new HttpError(inUse, 409);
@@ -186,7 +239,9 @@ export async function removeVenue(id: string) {
     const { error: cleanupError } = await db.from("qr_codes").delete().in("id", links.map(r => r.id));
     if (cleanupError) throw cleanupError;
   }
+  const files = await venueFiles(id);
   const { error } = await db.from("venues").delete().eq("id", id);
   if (error?.code === "23503") throw new HttpError("Mové o eliminá los enlaces del local antes de eliminarlo.", 409);
   if (error) throw error;
+  await removeFiles(files).catch(() => undefined);
 }

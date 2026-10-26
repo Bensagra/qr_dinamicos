@@ -2104,3 +2104,43 @@ input::placeholder {
 .short-design-toggle { padding: 0 24px 20px; }
 .mobile-proof.short-proof { display: none; }
 @media (max-width: 640px) { .short-output { grid-template-columns: 1fr; gap: 24px; padding: 20px; } }
+
+/* Menu photos and venue users. */
+.venue-detail { padding: 4px 0 28px; border-bottom: 1px solid var(--line); }
+.menu-photos, .venue-members { padding: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.menu-photos-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; }
+.menu-photos h3, .venue-members h3 { display: flex; align-items: center; gap: 8px; font-size: 15px; }
+.menu-photos-head p, .venue-members > p { color: var(--muted); font-size: 12px; line-height: 1.6; margin-top: 8px; max-width: 62ch; }
+.menu-status { color: var(--green); font-size: 12px; margin-top: 14px; }
+.menu-empty { color: var(--muted); font-size: 12px; margin-top: 18px; padding: 22px; background: var(--canvas); border-radius: 8px; text-align: center; }
+.photo-grid { list-style: none; padding: 0; margin: 20px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.photo-grid li { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--canvas); }
+.photo-grid img { display: block; width: 100%; height: 190px; object-fit: cover; object-position: top; background: #fff; }
+.photo-tools { display: flex; align-items: center; gap: 2px; padding: 6px; border-top: 1px solid var(--line); background: var(--surface); }
+.photo-tools span { flex: 1; font-size: 12px; font-weight: 750; padding-left: 6px; }
+.venue-members form { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.venue-members form input { flex: 1; min-width: 200px; max-width: 360px; }
+.venue-members ul { list-style: none; padding: 0; margin: 16px 0 0; }
+.venue-members li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.venue-members li > span:first-child { display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: var(--muted); min-width: 0; overflow-wrap: anywhere; }
+.venue-members li strong { font-size: 13px; color: var(--ink); }
+.member-shell { min-height: 100vh; background: var(--canvas); }
+.member-top { display: flex; align-items: center; gap: 16px; padding: 16px 32px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.member-top .brand { margin-right: auto; }
+.member-email { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.member-main { max-width: 1040px; margin: 0 auto; padding: 40px 32px; }
+.member-venue { font-size: 12px; font-weight: 700; display: grid; gap: 8px; min-width: 200px; }
+@media (max-width: 640px) {
+  .member-top { padding: 12px 16px; flex-wrap: wrap; }
+  .member-email { order: 3; width: 100%; }
+  .member-main { padding: 24px 16px; }
+  .menu-photos, .venue-members { padding: 16px; }
+  .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .photo-grid img { height: 160px; }
+}
+
+/* First scan of an empty QR. */
+.auth-box .claim-destination { margin-top: 12px; padding: 14px 16px; background: var(--canvas); border-radius: 8px; color: var(--ink); font-weight: 700; overflow-wrap: anywhere; }
+.auth-box > .button { width: 100%; margin: 25px 0 30px; }
+.auth-note a { text-decoration: underline; }
+.list-record > .pending-destination { font-size: 11px; color: var(--muted); margin: 6px 0; }

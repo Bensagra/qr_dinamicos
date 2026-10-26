@@ -42,16 +42,21 @@ export const designSchema = z
   .refine((d) => contrast(d.foreground, d.background) >= 4.5, {
     message: "Elegí un QR oscuro sobre un fondo claro con mayor contraste.",
   });
+export const destinationSchema = z
+  .string()
+  .trim()
+  .max(2048)
+  .refine(
+    validDestination,
+    "Ingresá una URL válida que empiece con https:// o http://.",
+  );
 export const qrInputSchema = z.object({
   name: z.string().trim().min(1, "Dale un nombre al QR.").max(80),
-  destination: z
-    .string()
-    .trim()
-    .max(2048)
-    .refine(
-      validDestination,
-      "Ingresá una URL válida que empiece con https:// o http://.",
-    ),
+  // Empty (null): the owner chooses the destination the first time the QR is scanned.
+  destination: z.preprocess(
+    (value) => (typeof value === "string" && !value.trim() ? null : value),
+    destinationSchema.nullable(),
+  ),
   design: designSchema,
   active: z.boolean(),
   venue_id: z.uuid().nullable().default(null),
@@ -70,6 +75,16 @@ export type QRRecord = QRInput & {
   created_at: string;
   updated_at: string;
 };
+export type MenuPhoto = {
+  id: string;
+  venue_id: string;
+  path: string;
+  width: number;
+  height: number;
+  position: number;
+  created_at: string;
+};
+export type Menu = { photos: (MenuPhoto & { url: string })[]; pdf: string | null };
 export type AppMode = "local" | "cloud" | "setup";
 export const defaultDesign: QRDesign = {
   foreground: "#173E36",
@@ -78,21 +93,18 @@ export const defaultDesign: QRDesign = {
   corners: "square",
   logo: null,
 };
-// Placeholder destination for the links every venue starts with; edit them afterwards.
-const configuredDefault = process.env.NEXT_PUBLIC_DEFAULT_DESTINATION_URL?.trim();
-export const defaultDestination =
-  configuredDefault && validDestination(configuredDefault) ? configuredDefault : "https://example.com/";
+// Every venue starts with these links, without destination until they are first scanned or edited.
 export function venueDefaultLinks(venue: Venue): QRInput[] {
   return (["short", "menu"] as const).map((kind) => ({
     name: `${kind === "menu" ? "Menú" : "NFC"} · ${venue.name}`.slice(0, 80),
-    destination: defaultDestination,
+    destination: null,
     design: { ...defaultDesign },
     active: true,
     venue_id: venue.id,
     kind,
   }));
 }
-// Untouched default link: never edited nor opened, so it can go away with its venue.
+// Untouched link: never given a destination nor opened, so it can go away with its venue.
 export const isPlaceholder = (record: QRRecord) =>
-  record.destination === defaultDestination && record.scans === 0;
+  record.destination === null && record.scans === 0;
 export const slugPattern = /^[A-Za-z0-9_-]{12}$/;

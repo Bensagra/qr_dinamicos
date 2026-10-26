@@ -12,7 +12,14 @@ async function handle(
   count: boolean,
 ) {
   try {
-    const destination = await resolveQR((await context.params).slug, count);
+    const slug = (await context.params).slug;
+    const destination = await resolveQR(slug, count);
+    // Empty QR: this first scan lets its owner choose the destination.
+    if (destination === "")
+      return new Response(null, {
+        status: 302,
+        headers: { ...headers, Location: `/configurar/${slug}` },
+      });
     if (destination && validDestination(destination))
       return new Response(null, {
         status: 302,

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   contrast,
   defaultDesign,
+  destinationSchema,
   qrInputSchema,
   slugPattern,
   validDestination,
@@ -59,6 +60,14 @@ test("validates QR contrast, bounded names and raster logos", () => {
     }).success,
     false,
   );
+});
+test("a QR may be saved empty, to get its destination on the first scan", () => {
+  const input = { name: "Mesa 4", active: true, design: defaultDesign };
+  for (const destination of ["", "   ", null])
+    assert.equal(qrInputSchema.parse({ ...input, destination }).destination, null);
+  assert.equal(qrInputSchema.parse({ ...input, destination: " https://example.com " }).destination, "https://example.com");
+  assert.equal(qrInputSchema.safeParse({ ...input, destination: "javascript:alert(1)" }).success, false);
+  assert.equal(destinationSchema.safeParse("").success, false);
 });
 test("public redirects use opaque exact-length URL-safe identifiers", () => {
   assert.ok(slugPattern.test("Abcd1234_-xy"));
